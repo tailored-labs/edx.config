@@ -1,0 +1,5 @@
+# variables common to the lms role, automatically loaded
+# when the role is included
+---
+edx_platform_repo: https://github.com/edx/edx-platform.git
+edx_platform_version: open-release/ironwood.master
