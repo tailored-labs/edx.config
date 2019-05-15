@@ -1,0 +1,38 @@
+upstream xqueue_app_server {
+            server 127.0.0.1:8040 fail_timeout=0;
+    }
+
+server {
+  listen 18040 default_server;
+
+  
+# Common settings used across nginx configurations
+
+# Disables server version feedback on pages and in headers
+server_tokens off;
+
+  location / {
+        try_files $uri @proxy_to_app;
+  }
+
+  # No basic auth security on the heartbeat url, so that ELB can use it
+  location /xqueue/status/{
+    try_files $uri @proxy_to_app;
+  }
+
+  
+location @proxy_to_app {
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+    proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+
+    # newrelic-specific header records the time when nginx handles a request.
+    proxy_set_header X-Queue-Start "t=${msec}";
+
+    proxy_set_header Host $http_host;
+
+    proxy_redirect off;
+    proxy_pass http://xqueue_app_server;
+  }
+}
+

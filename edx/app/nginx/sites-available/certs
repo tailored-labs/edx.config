@@ -1,0 +1,8 @@
+server {
+  listen 18090 default_server;
+
+  location / {
+    root /edx/var/certs/www-data;
+        try_files $uri $uri/valid.html =404;
+  }
+}

@@ -4,6 +4,7 @@ upstream cms-backend {
 
 server {
   # CMS configuration file for nginx, templated by ansible
+  server_name studio.tailoredlabs.org
       
   # Proxy to a remote maintanence page
   
@@ -11,24 +12,9 @@ server {
   error_page 504 /server/server-error.html;
   error_page 502 /server/server-error.html;
   error_page 500 /server/server-error.html;
-  
-  
-  location @empty_json {
-    # This location will return an empty body with content-type application/json
-    # If this location is referenced by the error_page directive the
-    # response code will be the error response code (i.e. 502), not 200
-    # despite the "return 200" directive
-    default_type application/json;
-    return 200;
-  }
-
-  listen 18010 ;
 
     
   
-  # prevent the browser from doing MIME-type sniffing
-  add_header X-Content-Type-Options nosniff;
-
   # Prevent invalid display courseware in IE 10+ with high privacy settings
   add_header P3P 'CP="Open edX does not have a P3P policy."';
 
@@ -61,10 +47,10 @@ server {
 server_tokens off;
 
   location @proxy_to_cms_app {
-    proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-Port $server_port;
     proxy_set_header X-Forwarded-For $remote_addr;
-
+    
     # newrelic-specific header records the time when nginx handles a request.
     proxy_set_header X-Queue-Start "t=${msec}";
 
@@ -72,26 +58,8 @@ server_tokens off;
 
     proxy_redirect off;
     proxy_pass http://cms-backend;
-
-  }
-
-  location @proxy_to_cms_app_api {
-    error_page 504 @empty_json;
-    error_page 502 @empty_json;
-    error_page 500 @empty_json;
-
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-Port $server_port;
-    proxy_set_header X-Forwarded-For $remote_addr;
-
-    # newrelic-specific header records the time when nginx handles a request.
-    proxy_set_header X-Queue-Start "t=${msec}";
-
-    proxy_set_header Host $http_host;
-
-    proxy_redirect off;
-    proxy_pass http://cms-backend;
-
+            
+    
   }
 
   location / {
@@ -105,12 +73,6 @@ server_tokens off;
 
   # No basic auth security on the heartbeat url, so that ELB can use it
   location /heartbeat {
-    # If /edx/var/nginx/server-static/maintenance_heartbeat.txt exists serve an
-    # empty 200 so the instance stays in the load balancer to serve the
-    # maintenance page
-    if (-f /edx/var/nginx/server-static/maintenance_heartbeat.txt) {
-       return 200;
-    }
     try_files $uri @proxy_to_cms_app;
   }
 
@@ -118,7 +80,7 @@ server_tokens off;
   # uses the authorization header so we can't have
   # basic auth on it as well.
   location /api {
-    try_files $uri @proxy_to_cms_app_api;
+    try_files $uri @proxy_to_cms_app;
   }
 
 
@@ -166,6 +128,37 @@ server_tokens off;
     # Non-hashed files (there should be very few / none of these)
     add_header "Cache-Control" $cache_header_short_lived always;
   }
+
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/courses.tailoredlabs.org/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/courses.tailoredlabs.org/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+server {
+    if ($host = studio.tailoredlabs.org) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  server_name studio.tailoredlabs.org
+      
+  # Proxy to a remote maintanence page
+  
+  # error pages
+  error_page 504 /server/server-error.html;
+  
+  listen 80 ;
+
+  
+
+  server_name ~^((stage|prod)-)?studio.*;
+    return 404; # managed by Certbot
 
 
 }
