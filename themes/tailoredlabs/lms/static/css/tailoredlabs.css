@@ -3,3 +3,7 @@
  Custom Global CSS Goes Here
 
 */
+
+h1, h2, a {
+  color: white;
+}

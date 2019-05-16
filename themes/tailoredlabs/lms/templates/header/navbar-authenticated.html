@@ -9,7 +9,11 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 %>
-
+<style>
+  .a {
+    color: #fff;
+  }
+</style>
 <%
   show_explore_courses = settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing
   show_sysadmin_dashboard = settings.FEATURES.get('ENABLE_SYSADMIN_DASHBOARD','') and user.is_staff
