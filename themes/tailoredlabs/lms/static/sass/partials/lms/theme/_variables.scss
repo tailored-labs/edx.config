@@ -1,4 +1,4 @@
-// Taken from the sample dark theme provided by openedx
+// Built based on the dark theme provided by Open edX
 
 // Theme colors
 //
@@ -6,6 +6,7 @@
 $purple: #7E69C0;
 $dark-gray: #393939;
 $off-white: #ececec;
+$white: #fff;
 
 // Houston May-2019: Try to implement dark theme
 $primary: $purple;
@@ -17,6 +18,8 @@ $container-bg: $off-white;
 $content-wrapper-bg: $off-white;
 $footer-bg: $purple;
 
+$body-bg: $dark-gray;
+$body-color: $white;
 
 // Theme fonts
 $font-family-sans-serif: cursive;
