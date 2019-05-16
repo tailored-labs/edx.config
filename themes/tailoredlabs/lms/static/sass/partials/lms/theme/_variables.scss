@@ -3,13 +3,23 @@
 // Theme colors
 //
 // Note: define colors needed by your theme first
+$purple: #7E69C0;
+$dark-gray: #393939;
+$off-white: #ececec;
 
 // Houston May-2019: Try to implement dark theme
-$primary: #7E69C0;
-$inverse: #393939;
+$primary: $purple;
+$inverse: $dark-gray;
+
+//Theming overrides
+// Houston May-2019
+$container-bg: $off-white;
+$content-wrapper-bg: $off-white;
+$footer-bg: $purple;
+
 
 // Theme fonts
-// $font-family-sans-serif: cursive;
+$font-family-sans-serif: cursive;
 
 // Initialize the Open edX Bootstrap theme
 @import 'edx-bootstrap/sass/open-edx/theme';
