@@ -28,12 +28,12 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
     help_link = doc_link
 %>
 
-<div class="nav-links"  style="color:white">
+<div class="nav-links">
   <div class="main">
     % if show_dashboard_tabs:
       <div class="mobile-nav-item hidden-mobile nav-item nav-tab">
         <a class="${'active ' if reverse('dashboard') == request.path else ''}tab-nav-link" href="${reverse('dashboard')}"
-             aria-current="${'page' if reverse('dashboard') == request.path else 'false'}">
+             aria-current="${'page' if reverse('dashboard') == request.path else 'false'}" style="${'color:purple; ' if reverse('dashboard') == request.path else 'color:white;'}">
              ${_("Courses")}
         </a>
       </div>
