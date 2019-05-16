@@ -7,6 +7,13 @@ from django.urls import reverse
 
 from openedx.core.djangolib.markup import HTML, Text
 %>
+## Houston May-2019: adding bootstrap to the home page
+<head>
+  <!-- McDaniel Oct-2018: add the Bootstrap library, unless it's already included from webpack -->
+  % if not uses_bootstrap:
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  % endif
+</head>
 
 <main id="main" aria-label="Content" tabindex="-1">
     <section class="home">
@@ -68,4 +75,11 @@ from openedx.core.djangolib.markup import HTML, Text
 <script type="text/javascript">
   $(window).load(function() {$('#signup_action').trigger("click");});
 </script>
+% endif
+
+## Houston May-2019: adding bootstrap to the home page
+% if not uses_bootstrap:
+  <!-- McDaniel Oct-2018: add the Bootstrap javascript library, unless it's already included from webpack -->
+  ## xss-lint: disable=mako-invalid-js-filter
+  <script type="text/javascript" src="${static.url('common/js/vendor/bootstrap.bundle.js')}"></script>
 % endif
