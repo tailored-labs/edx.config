@@ -1,0 +1,36 @@
+// Built based on the dark theme provided by Open edX
+
+// Theme colors
+//
+// Note: define colors needed by your theme first
+$purple: #7E69C0;
+$dark-gray: #393939;
+$off-white: #ececec;
+$white: #fff;
+
+// Houston May-2019: Try to implement dark theme
+$primary: $purple;
+$inverse: $dark-gray;
+$secondary: $white;
+
+//Theming overrides
+// Houston May-2019
+// $container-bg: $off-white;
+// $content-wrapper-bg: $off-white;
+// $footer-bg: $purple;
+//
+// $body-bg: $dark-gray;
+// $body-color: $white;
+
+// $headings-color: $white;
+// $input-color: $white;
+// $input-placeholder-color: $white;
+// $dropdown-link-color: $white;
+// $dropdown-link-active-color: $primary;
+
+
+// Theme fonts
+$font-family-sans-serif: cursive;
+
+// Initialize the Open edX Bootstrap theme
+@import 'edx-bootstrap/sass/open-edx/theme';

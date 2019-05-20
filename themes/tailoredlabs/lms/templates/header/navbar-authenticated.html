@@ -9,7 +9,9 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 %>
+<style>
 
+</style>
 <%
   show_explore_courses = settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing
   show_sysadmin_dashboard = settings.FEATURES.get('ENABLE_SYSADMIN_DASHBOARD','') and user.is_staff
@@ -31,7 +33,7 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
     % if show_dashboard_tabs:
       <div class="mobile-nav-item hidden-mobile nav-item nav-tab">
         <a class="${'active ' if reverse('dashboard') == request.path else ''}tab-nav-link" href="${reverse('dashboard')}"
-             aria-current="${'page' if reverse('dashboard') == request.path else 'false'}">
+             aria-current="${'page' if reverse('dashboard') == request.path else 'false'}" style="">
              ${_("Courses")}
         </a>
       </div>
